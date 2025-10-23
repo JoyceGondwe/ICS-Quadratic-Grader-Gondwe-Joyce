@@ -30,6 +30,27 @@
             font: size 0.9em;
             color: black;
         }
+        input {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #0b5fff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #084cd6;
+}
+
 
         
     </style>
@@ -37,13 +58,32 @@
 <body>
     <div class="container"></div>
     <h1>ICS Quadratic solver and Grading System</h1>
-    <p>welcome😁this web app will allow you to solve quadratic equations and convert numeric scores into grads.dosn't thta sound fun🎉😎</p>
+    <p>welcome😁this web app will allow you to solve quadratic equations and convert numeric scores into Grads.lets make learnig  fun🎉😎</p>
 
-    <!-- Quadratic Solver section (to be added later)-->
-     <section id="quadratic-section">
-        <h2>Quadratic Solver</h2>
-        <p>coming soon</p>
-     </section>
+    
+<section id="quadratic-section">
+  <h2>Quadratic Solver</h2>
+  <p>Enter the coefficients for your quadratic equation (ax² + bx + c = 0):</p>
+
+  <form id="quadraticForm">
+    <label for="a">a:</label>
+    <input type="number" id="a" required placeholder="Enter a">
+
+    <label for="b">b:</label>
+    <input type="number" id="b" required placeholder="Enter b">
+
+    <label for="c">c:</label>
+    <input type="number" id="c" required placeholder="Enter c">
+
+    <br><br>
+    <button type="button" id="solveBtn">Solve Equation</button>
+    <button type="button" id="clearBtn">Clear</button>
+  </form>
+
+  <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+</section>
+
+
 
 
 
@@ -56,8 +96,73 @@
         <P>&copy; 2025 Joyce Gondwe | ICT251 Project</P>
     </footer>
     <script>
-        //---Initial javaScript placeholder---
-        console.log("ICS Quadratic solver and Grading System load successfully!");
-    </script>
+        
+  console.log("Quadratic Solver Loaded!");
+
+  // Select elements from the DOM
+  const aInput = document.getElementById("a");
+  const bInput = document.getElementById("b");
+  const cInput = document.getElementById("c");
+  const resultDiv = document.getElementById("result");
+  const solveBtn = document.getElementById("solveBtn");
+  const clearBtn = document.getElementById("clearBtn");
+
+  // Function to calculate discriminant and roots
+  function solveQuadratic() {
+    // Get values from inputs
+    const a = parseFloat(aInput.value);
+    const b = parseFloat(bInput.value);
+    const c = parseFloat(cInput.value);
+
+    // Input validation
+    if (isNaN(a) || isNaN(b) || isNaN(c)) {
+      resultDiv.style.color = "red";
+      resultDiv.textContent = "Please enter valid numbers for a, b, and c.";
+      return;
+    }
+    if (a === 0) {
+      resultDiv.style.color = "red";
+      resultDiv.textContent = "Value of 'a' cannot be 0 (not a quadratic equation).";
+      return;
+    }
+
+    // Compute discriminant
+    const D = b * b - 4 * a * c;
+
+    let output = `Discriminant (D) = ${D.toFixed(2)}\n`;
+
+    // Compute roots based on D
+    if (D > 0) {
+      const x1 = (-b + Math.sqrt(D)) / (2 * a);
+      const x2 = (-b - Math.sqrt(D)) / (2 * a);
+      output += `Two distinct real roots:\n x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}`;
+    } else if (D === 0) {
+      const x = -b / (2 * a);
+      output += `One real repeated root:\n x = ${x.toFixed(4)}`;
+    } else {
+      const realPart = (-b / (2 * a)).toFixed(4);
+      const imagPart = (Math.sqrt(-D) / (2 * a)).toFixed(4);
+      output += `Two complex roots:\n x₁ = ${realPart} + ${imagPart}i\n x₂ = ${realPart} - ${imagPart}i`;
+    }
+
+    resultDiv.style.color = "black";
+    resultDiv.innerText = output;
+      }
+
+  // Clear function
+  function clearFields() {
+    aInput.value = "";
+    bInput.value = "";
+    cInput.value = "";
+    resultDiv.textContent = "";
+    }
+
+  // Event listeners for buttons
+  solveBtn.addEventListener("click", solveQuadratic);
+  clearBtn.addEventListener("click", clearFields);
+</script>
+
+
+    
 </body>
 </html>
